@@ -16,7 +16,7 @@ class Analysis:
         api = tweepy.API(auth)
 
 
-        b = b = TextBlob("u"+ str(searchTerm) )
+        b = TextBlob("u"+ str(searchTerm))
         lan = b.detect_language()
         self.tweets = tweepy.Cursor(api.search, q=searchTerm, lang = lan).items(NoOfTerms)
 
