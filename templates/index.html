@@ -3,6 +3,7 @@
 <head>
         <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -24,13 +25,14 @@
     <style>
         body{
 /*            background:#eee;*/
-            color:#555;
+            color:#333;
         }
         .menu{
             margin-top:50px;
             position:fixed;
             width:300px;
             height:100%;
+            border-right:1px solid #eee;
         }
         .content{
             position:static;
@@ -41,13 +43,13 @@
             height:1000px;
         }
         .title{
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Rubik', sans-serif;
             position:fixed;
             top:0px;
             width:100%;
             height:60px;
 /*            text-align: center;*/
-            background:#777;
+            background:#222;
             color:#fff;
         }
         .title>h4{
@@ -59,21 +61,20 @@
         }
         
         a{  
-            color:#663366;
+            color:black;
             font-size:18px;
             text-decoration: none;
         }
         a:hover{
-            color:#663366;
+            color:darkgoldenrod;
             text-decoration: none;
         }
         
         a:active{
-            color:#663366;
+           
             text-decoration: none;            
         }
         a:visited{
-            color:#663366;
             text-decoration: none;
         }
         
@@ -95,9 +96,9 @@
              <li><a href="#overview"> Project Overview</a></li>
              <li><a href="#classifier"> Text Classification System</a></li>
              <li><a href="#textblob">TextBlob</a></li>
-             <li><a href="mode">Trained Models</a></li>
              <li><a href="#apli">Applications</a></li>
              <li><a href="#fs">Future Scope</a></li>
+             <li><a href="mode">Trained Models</a></li>
              <li><a href="visual/">Feedback Analysis</a></li>
             
         </ul>
@@ -218,8 +219,10 @@ True
     >>> blob.classify()
     'pos'</pre>
          
-        </div>     
+        </div>    
         
+        <hr/>
+        <br>
         <div id="textblob">
             <p>  TextBlob aims to provide access to common text-processing operations through a familiar interface. You can treat TextBlob objects as if they were Python strings that learned how to do Natural Language Processing.
            </p>
@@ -383,6 +386,7 @@ True
             
 
         </div>
+        <hr/>
         <div id="apli">
         <h3>Applications of sentiment analysis</h3>
             <br>
@@ -409,8 +413,9 @@ True
             </ul>
 
         </div>
-        
+        <hr/>
         <br>
+        
         <div id="fs">
         <h3> Future of sentiment Analysis</h3>
          <ul>
