@@ -23,23 +23,23 @@ $ python3 -m venv myvenv
 ```
 
 #### 4. Start your virtual environment by running:
-In windows
+Windows
 ```sh
 C:\Users\Name\twitter-master> myvenv\Scripts\activate
 ```
-In ubuntu
+Linux
 ```sh
 $ source/myvenv/bin/activate
 ```
 #### 5. Installing packages with requirements
-Ubuntu
-```sh
-pip install -r requirements.txt
-```
 Windows
 ```sh
 C:\Users\Name\twitter-master> python -m pip install -r requirements.txt
   ```
+Linux
+```sh
+pip install -r requirements.txt
+```
   
 #### 6. Apply migrations
 ```sh
@@ -55,4 +55,6 @@ C:\Users\Name\twitter-master> python -m pip install -r requirements.txt
 ### Todos
 
  - Create twitter account specific feedback
+ - Support for hindi tweets
+ - Improve training model accuracy
  
