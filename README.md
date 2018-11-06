@@ -1,15 +1,14 @@
-# twilob
 ### Installation Instructions
 #
 
 #### 1.	Use git clone to clone this repository to your local machine: 
 ```sh 
-$ git clone https://github.com/anurag-bug/twitter.git
+$ git clone https://github.com/hemant1612/twilob
 
 ```
 #### 2. Navigate to Source Directory
 ```sh 
-$ cd twitter-master
+$ cd twilob
 ```
 
 #### 3.Create a virtualenv
@@ -50,7 +49,7 @@ pip install -r requirements.txt
 ```sh
 (myvenv) ~/twitter-master$ python manage.py runserver
 ```
- App will run on http://127.0.0.1:8000/twitter/search/
+ App will run on http://127.0.0.1:8000
 
 ### Todos
 
