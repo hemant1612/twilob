@@ -54,6 +54,6 @@ pip install -r requirements.txt
 ### Todos
 
  - Create twitter account specific feedback
- - Support for hindi tweets
+ - ~~Support for hindi tweets~~
  - Improve training model accuracy
  
