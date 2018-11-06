@@ -19,7 +19,7 @@ class Analysis:
         b = TextBlob("u"+ str(searchTerm))
         lan = b.detect_language()
         self.tweets = tweepy.Cursor(api.search, q=searchTerm, lang = lan).items(NoOfTerms)
-
+        print(lan)
 
         positive = 0
         weaklyPositive = 0
@@ -34,7 +34,12 @@ class Analysis:
         models.positiveTweets.objects.all().delete()
         models.negativeTweets.objects.all().delete()
         for tweet in self.tweets:
-            analysis = TextBlob(self.removeURL(tweet.text))
+            
+            if lan != 'hi':  
+                analysis = TextBlob(self.removeURL(tweet.text))
+            else:
+                analysis = TextBlob(self.removeURL(tweet.text)).translate(to="en")
+                
             if (analysis.sentiment.polarity>0):
                 tweetObject=models.positiveTweets()
                 tweetObject.tweetText=tweet.text
