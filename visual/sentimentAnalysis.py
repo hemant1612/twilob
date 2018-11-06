@@ -16,7 +16,9 @@ class Analysis:
         api = tweepy.API(auth)
 
 
-        self.tweets = tweepy.Cursor(api.search, q=searchTerm, lang = "en").items(NoOfTerms)
+        b = b = TextBlob("u"+ str(searchTerm) )
+        lan = b.detect_language()
+        self.tweets = tweepy.Cursor(api.search, q=searchTerm, lang = lan).items(NoOfTerms)
 
 
         positive = 0
@@ -32,9 +34,7 @@ class Analysis:
         models.positiveTweets.objects.all().delete()
         models.negativeTweets.objects.all().delete()
         for tweet in self.tweets:
-            #print (tweet.text)
             analysis = TextBlob(self.removeURL(tweet.text))
-            #print(analysis.sentiment)
             if (analysis.sentiment.polarity>0):
                 tweetObject=models.positiveTweets()
                 tweetObject.tweetText=tweet.text
