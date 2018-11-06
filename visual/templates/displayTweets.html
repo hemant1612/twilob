@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tweets</title>
+    <link href="https://fonts.googleapis.com/css?family=Poor+Story" rel="stylesheet">
+    
+    <style>
+        body{
+            background:#eee;
+            padding-left:200px;
+            font-family: 'Poor Story', cursive;
+        }
+        ul>li {
+            list-style-type:none;
+        }
+        h1,h2{
+            padding-left:40px;
+            text-decoration-color: aqua;
+        }
+    </style>
+    
+</head>
+<body>
+<h1>Positive Tweets</h1>
+
+{% for i in positive%}
+ <ul>
+    <li> {{i.tweetText}}</li>
+    <li>{{i.userName}}</li>
+    <li>{{i.time}}</li>
+ </ul>
+{% endfor %} 
+
+
+
+
+
+
+<h1>Negative Tweets</h1>
+{% for i in negative %}
+ <ul>
+    <li> {{i.tweetText}}</li>
+    <li>{{i.userName}}</li>
+    <li>{{i.time}}</li>
+ </ul>
+{% endfor %}
+
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+{%  load static %}
+<html>
+<head>
+        <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $("a").on('click', function(event) {
+        if (this.hash !== "") {
+          event.preventDefault();
+          var hash = this.hash;
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top-100
+          }, 600, function(){
+            window.location.hash = hash;
+          });
+        } 
+      });
+    });
+        
+    </script>
+    <style>
+        body{
+            background:#eee;
+            color:#555;
+        }
+        .menu{
+            margin-top:50px;
+            position:fixed;
+            width:300px;
+            height:100%;
+        }
+        .content{
+            position:static;
+            top:120px;
+            margin-top:120px;
+            margin-left:500px;
+            width:600px;
+            height:1000px;
+        }
+        .title{
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            position:fixed;
+            top:0px;
+            width:100%;
+            height:60px;
+/*            text-align: center;*/
+            background:#777;
+            color:#fff;
+        }
+        .title>h4{
+            padding:12px;
+        }
+        
+        .menu>ul{
+            list-style-type: none;
+        }
+        
+        a{  
+            color:#663366;
+            font-size:18px;
+            text-decoration: none;
+        }
+        a:hover{
+            color:#663366;
+            text-decoration: none;
+        }
+        
+        a:active{
+            color:#663366;
+            text-decoration: none;            
+        }
+        a:visited{
+            color:#663366;
+            text-decoration: none;
+        }
+        
+        #overview{
+            padding:50px;
+        }
+        
+    </style>
+    
+    
+</head>
+{% block body %}
+<body>
+    <div class="title">
+     <h4>Feedback Analysis Of Tweets</h4>
+    </div>
+    <div class="menu">
+        <ul>
+             <li><a href="#overview"> Project Overview</a></li>
+             <li><a href="#classifier"> Text Classification System</a></li>
+             <li><a href="#textblob">TextBlob</a></li>
+             <li><a href="mode">Trained Models</a></li>
+             <li><a href="visual/">Feedback Analysis</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <div id="overview">
+            {% load staticfiles %}
+            <img src="https://i.imgur.com/gcNcMYK.png" />
+        
+        </div>
+        <div id="classifier">
+           <p> The textblob.classifiers module makes it simple to create custom classifiers. </p> 
+           <p>As an example, let’s create a custom sentiment analyzer.</p>
+           <p>Loading Data and Creating a Classifier. First we’ll create some training and test data.</p>
+            
+
+            <pre>
+    >>> train = [
+    ...     ('I love this sandwich.', 'pos'),
+    ...     ('this is an amazing place!', 'pos'),
+    ...     ('I feel very good about these beers.', 'pos'),
+    ...     ('this is my best work.', 'pos'),
+    ...     ("what an awesome view", 'pos'),
+    ...     ('I do not like this restaurant', 'neg'),
+    ...     ('I am tired of this stuff.', 'neg'),
+    ...     ("I can't deal with this", 'neg'),
+    ...     ('he is my sworn enemy!', 'neg'),
+    ...     ('my boss is horrible.', 'neg')
+    ... ]
+    >>> test = [
+    ...     ('the beer was good.', 'pos'),
+    ...     ('I do not enjoy my job', 'neg'),
+    ...     ("I ain't feeling dandy today.", 'neg'),
+    ...     ("I feel amazing!", 'pos'),
+    ...     ('Gary is a friend of mine.', 'pos'),
+    ...     ("I can't believe I'm doing this.", 'neg')
+    ... ]
+            </pre>
+            
+            <p>Now we’ll create a Naive Bayes classifier, passing the training data into the constructor.</p>
+            <pre>
+    >>> from textblob.classifiers import NaiveBayesClassifier
+    >>> cl = NaiveBayesClassifier(train)  </pre>
+            
+            <h2>Loading Data from Files</h2>
+            <p>A sample CSV File</p>
+            <code>
+                I love this sandwich.,pos<br>
+                This is an amazing place!,pos<br>
+                I do not like this restaurant,neg<br>
+            </code>
+            
+                <p>JSON files should be formatted like so:</p>
+
+            <code>
+                [<br>
+                    {"text": "I love this sandwich.", "label": "pos"},<br>
+                    {"text": "This is an amazing place!", "label": "pos"},<br>
+                    {"text": "I do not like this restaurant", "label": "neg"}<br>
+                ]
+            </code>
+            
+            
+                <p>Then pass the opened file into the constructor.</p>
+                
+               <pre>
+ >>> with open('train.json', 'r') as fp:
+ ... cl = NaiveBayesClassifier(fp, format="json")</pre><br>
+            
+           <h3>Updating Classifiers with New Data</h3>
+            <p>
+                Use the update(new_data) method to update a classifier with new training data.
+            </p>
+
+       <pre>
+>>> new_data = [('She is my best friend.', 'pos'),
+... ("I'm happy to have a new friend.", 'pos'),
+... ("Stay thirsty, my friend.", 'pos'),
+... ("He ain't from around here.", 'neg')]
+>>> cl.update(new_data)
+True
+>>> cl.accuracy(test)
+1.0 </pre>
+
+          <h3>Feature Extractors </h3>
+          <p>  By default, the NaiveBayesClassifier uses a simple feature extractor that indicates which words in the training set are contained in a document.</p>
+          <p>
+          For example, the sentence “I feel happy” might have the features contains(happy): True or contains(angry): False.
+          </p>
+            
+          <p>  feature extractor can be overwritten by writing our own. A feature extractor is simply a function with document (the text to extract features from) as the first argument. The function may include a second argument, train_set (the training dataset), if necessary.     </p>
+
+          <p>
+            The function should return a dictionary of features for document.
+          </p>
+
+
+        <p>For example, let’s create a feature extractor that just uses the first and last words of a document as its features. </p>
+ 
+        <pre>
+    >>> def end_word_extractor(document):
+    ...     tokens = document.split()
+    ...     first_word, last_word = tokens[0], tokens[-1]
+    ...     feats = {}
+    ...     feats["first({0})".format(first_word)] = True
+    ...     feats["last({0})".format(last_word)] = False
+    ...     return feats
+    >>> features = end_word_extractor("I feel happy")
+    >>> assert features == {'last(happy)': False, 'first(I)': True} </pre>
+        
+       <p> We can then use the feature extractor in a classifier by passing it as the second argument of the constructor.</p>
+            
+       <pre>
+    >>> cl2 = NaiveBayesClassifier(test, feature_extractor=end_word_extractor)
+    >>> blob = TextBlob("I'm excited to try my new classifier.", classifier=cl2)
+    >>> blob.classify()
+    'pos'</pre>
+         
+        </div>     
+        
+        <div id="textblob">
+            <p>  TextBlob aims to provide access to common text-processing operations through a familiar interface. You can treat TextBlob objects as if they were Python strings that learned how to do Natural Language Processing.
+           </p>
+           <h1> Create a TextBlob </h1>
+           <p>First, the import.</p> 
+
+     <pre>>>> from textblob import TextBlob</pre>
+            <p> Let’s create our first TextBlob.</p>
+<pre>>>> wiki = TextBlob("Python is a high-level, general-purpose programming language.")</pre>
+            
+           <h3> Part-of-speech Tagging</h3>
+           <p>Part-of-speech tags can be accessed through the tags property.</p>
+           <pre>>>> wiki.tags[('Python', 'NNP'), ('is', 'VBZ'), ('a', 'DT'), ('high-level', 'JJ'), ('general-purpose', 'JJ'), ('programming', 'NN'), ('language', 'NN')]</pre>
+          <h3>Noun Phrase Extraction</h3>
+            <p>Similarly, noun phrases are accessed through the noun_phrases property.</p>
+            <pre>>>> wiki.noun_phrases
+                 WordList(['python']) </pre>
+            
+          <h3>Sentiment Analysis </h3>
+          <p>The sentiment property returns a namedtuple of the form Sentiment(polarity, subjectivity). The polarity score is a float within the range [-1.0, 1.0]. The subjectivity is a float within the range [0.0, 1.0] where 0.0 is very objective and 1.0 is very subjective. </p>
+            
+        <pre>
+    >>> testimonial = TextBlob("Textblob is amazingly simple to use. What great fun!")
+    >>> testimonial.sentiment
+    Sentiment(polarity=0.39166666666666666, subjectivity=0.4357142857142857)
+    >>> testimonial.sentiment.polarity
+    0.39166666666666666
+    </pre>
+            
+        <h3>Tokenization</h3>
+          <p>You can break TextBlobs into words or sentences.</p>
+         <pre>
+    >>> zen = TextBlob("Beautiful is better than ugly. "
+    ... "Explicit is better than implicit. "
+    ... "Simple is better than complex.")
+    >>> zen.words
+    WordList(['Beautiful', 'is', 'better', 'than', 'ugly', 'Explicit', 'is', 'better', 'than', 'implicit', 'Simple', 'is', 'better', 'than', 'complex'])
+    >>> zen.sentences
+    [Sentence("Beautiful is better than ugly."), Sentence("Explicit is better than implicit."), Sentence("Simple is better than complex.")]
+         </pre>
+    <p> Sentence objects have the same properties and methods as TextBlobs.</p>
+    <pre>
+    >>> for sentence in zen.sentences:
+    ...     print(sentence.sentiment)
+    </pre>
+            
+        
+          <h3>Words Inflection and Lemmatization </h3>
+            <p> Each word in TextBlob.words or Sentence.words is a Word object (a subclass of unicode) with useful methods, e.g. for word inflection.</p>
+            
+         <pre>
+    >>> sentence = TextBlob('Use 4 spaces per indentation level.')
+    >>> sentence.words
+    WordList(['Use', '4', 'spaces', 'per', 'indentation', 'level'])
+    >>> sentence.words[2].singularize()
+    'space'
+    >>> sentence.words[-1].pluralize()
+    'levels'
+         </pre>
+
+
+      <p>Words can be lemmatized by calling the lemmatize method. </p>
+            <pre>
+    >>> from textblob import Word
+    >>> w = Word("octopi")
+    >>> w.lemmatize()
+    'octopus'
+    >>> w = Word("went")
+    >>> w.lemmatize("v")  # Pass in WordNet part of speech (verb)
+    'go'
+            </pre>
+            
+        <h3>WordNet Integration </h3>
+        <p>You can access the synsets for a Word via the synsets property or the get_synsets method, optionally passing in a part of speech. </p>
+        <pre>
+    >>> from textblob import Word
+    >>> from textblob.wordnet import VERB
+    >>> word = Word("octopus")
+    >>> word.synsets
+    [Synset('octopus.n.01'), Synset('octopus.n.02')]
+    >>> Word("hack").get_synsets(pos=VERB)
+    [Synset('chop.v.05'), Synset('hack.v.02'), Synset('hack.v.03'), Synset('hack.v.04'), Synset('hack.v.05'), Synset('hack.v.06'), Synset('hack.v.07'), Synset('hack.v.08')]
+        </pre>
+
+
+
+
+     <p>You can access the definitions for each synset via the definitions property or the define() method, which can also take an optional part-of-speech argument. </p>
+
+      <pre>
+      >>> Word("octopus").definitions
+      ['tentacles of octopus prepared as food', 'bottom-living cephalopod having a soft oval body with eight long tentacles']
+      </pre>
+
+
+
+      <p>You can also create synsets directly.</p>
+        <pre>
+    >>> from textblob.wordnet import Synset
+    >>> octopus = Synset('octopus.n.02')
+    >>> shrimp = Synset('shrimp.n.03')
+    >>> octopus.path_similarity(shrimp)
+    0.1111111111111111
+        </pre>
+            
+    <h3>WordLists</h3>
+
+    <p>A WordList is just a Python list with additional methods. </p>
+    
+       <pre>
+    >>> animals = TextBlob("cat dog octopus")
+    >>> animals.words
+    WordList(['cat', 'dog', 'octopus'])
+    >>> animals.words.pluralize()
+    WordList(['cats', 'dogs', 'octopodes'])</pre>
+            
+        <h3>Spelling Correction</h3>
+        <p>Use the correct() method to attempt spelling correction. </p>
+        
+        <pre>
+    >>> b = TextBlob("I havv goood speling!")
+    >>> print(b.correct()) </pre>
+
+        <p>I have good spelling! </p>
+        <p> Word objects have a spellcheck() Word.spellcheck() method that returns a list of (word, confidence) tuples with spelling suggestions.</p>
+            
+     <pre>
+    >>> from textblob import Word
+    >>> w = Word('falibility')
+    >>> w.spellcheck()
+    [('fallibility', 1.0)]
+     </pre>
+            
+     <p> Spelling correction is based on Peter Norvig’s “How to Write a Spelling Corrector”[1] as implemented in the pattern library. It is about 70% accurate [2].</p>
+            
+     <p> Spelling correction is based on Peter Norvig’s “How to Write a Spelling Corrector”[1] as implemented in the pattern library. It is about 70% accurate.</p>
+            
+     <h3>Get Word and Noun Phrase Frequencies </h3>
+            
+     <p>There are two ways to get the frequency of a word or noun phrase in a TextBlob. </p>
+     <p>The first is through the word_counts dictionary. </p>
+    <pre>
+    >>> monty = TextBlob("We are no longer the Knights who say Ni. "
+    ... "We are now the Knights who say Ekki ekki ekki PTANG.")
+    >>> monty.word_counts['ekki']
+    3
+    </pre>
+
+ 
+
+    <p> TextBlobs can be translated between languages.</p>
+    <pre>    >>> en_blob = TextBlob(u'Simple is better than complex.')
+    >>> en_blob.translate(to='es')</pre>
+    <h3>Parsing</h3>
+            
+    <p> Use the parse() method to parse the text.</p>
+    <pre>
+    >>> b = TextBlob("And now for something completely different.")
+    >>> print(b.parse())
+    </pre>
+            
+    <p>And/CC/O/O now/RB/B-ADVP/O for/IN/B-PP/B-PNP something/NN/B-NP/I-PNP completely/RB/B-ADJP/O different/JJ/I-ADJP/O ././O/O
+       By default, TextBlob uses pattern’s parser. </p>
+
+
+        </div>
+    </div>
+
+    
+    
+</body>
+{% endblock %}
+</html>
