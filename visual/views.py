@@ -8,7 +8,6 @@ def index(request):
     return render(request, 'form.html', {})
 
 def getSearchTerm(request):
-    print("work")
     if request.method=='POST':
         searchTerm = request.POST['term']
         number = int(request.POST['number'])
@@ -19,6 +18,9 @@ def getSearchTerm(request):
     else:
         return render(request, 'form.html')
     
+def realTweets(request):
+    return render(request,'real.html',{})
+
     
 def showTweets(request):
     positiveList=list(models.positiveTweets.objects.all())

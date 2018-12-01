@@ -17,8 +17,8 @@ class Analysis:
 
 
         b = TextBlob("u"+ str(searchTerm))
-        lan = b.detect_language()
-        self.tweets = tweepy.Cursor(api.search, q=searchTerm, lang = lan).items(NoOfTerms)
+        lan = 'en'
+        self.tweets = tweepy.Cursor(api.search, q=searchTerm+' -filter:retweets', lang = lan,tweet_mode='extended').items(NoOfTerms)
         print(lan)
 
         positive = 0
@@ -35,20 +35,20 @@ class Analysis:
         models.negativeTweets.objects.all().delete()
         for tweet in self.tweets:
             
-            if lan != 'hi':  
-                analysis = TextBlob(self.removeURL(tweet.text))
-            else:
-                analysis = TextBlob(self.removeURL(tweet.text)).translate(to="en")
+#            if lan != 'hi':  
+            analysis = TextBlob(self.removeURL(tweet.full_text))
+#            else:
+#                analysis = TextBlob(self.removeURL(tweet.full_text)).translate(to="en")
                 
             if (analysis.sentiment.polarity>0):
                 tweetObject=models.positiveTweets()
-                tweetObject.tweetText=tweet.text
+                tweetObject.tweetText=self.removeURL(tweet.full_text)
                 tweetObject.userName=str(tweet.user.name)
                 tweetObject.time=tweet.created_at
                 tweetObject.save()
             if (analysis.sentiment.polarity<0):
                 tweetObject=models.negativeTweets()
-                tweetObject.tweetText=tweet.text
+                tweetObject.tweetText=self.removeURL(tweet.full_text)
                 tweetObject.userName=str(tweet.user.name)
                 tweetObject.time=tweet.created_at
                 tweetObject.save()

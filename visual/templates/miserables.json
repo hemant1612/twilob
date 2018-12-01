@@ -1,0 +1,13 @@
+{
+  "nodes": [
+    {"id": "redmi", "group": 1},
+    {"id": "charge", "group": 1},
+    {"id": "battery", "group": 1},
+    {"id": "sound", "group": 1}
+  ],
+  "links": [
+    {"source": "redmi", "target": "charge", "value": 1},
+    {"source": "redmi", "target": "battery", "value": 1},
+    {"source": "redmi", "target": "sound", "value": 1}
+  ]
+}

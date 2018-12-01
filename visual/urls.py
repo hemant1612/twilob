@@ -5,6 +5,7 @@ from . import views
 
 
 urlpatterns = [
+    url(r'real/$',views.realTweets),
     url(r'search/$',views.getSearchTerm),
     url(r'tweet',views.showTweets),
     url('^$',views.index, name='index'),
